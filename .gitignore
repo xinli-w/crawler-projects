@@ -1,0 +1,7 @@
+# 忽略微博爬取的图片视频文件夹
+微博爬虫/weibo-image-video/
+
+
+# 数据库真实密码配置
+db_config.py
+.env
