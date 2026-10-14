@@ -10,8 +10,8 @@ import random
 import pymysql
 #获取每个电影链接
 def get_movie_url(url,child_urls):
-    headers1 = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"}
+    headers1 = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"}
     #拿到页面源代码
     resp=requests.get(url,headers=headers1)
     resp.encoding = "utf-8"
@@ -34,23 +34,34 @@ def get_movie_info(child_urls,movie_info_list):
         number = child_html.xpath('//*[@id="content"]//div[@class="top250"]/span[@class="top250-no"]/text()')
         name = child_html.xpath('//*[@id="content"]/h1/span[@property="v:itemreviewed"]/text()')
         year = child_html.xpath('//*[@id="content"]/h1/span[@class="year"]/text()')
-        director = child_html.xpath('//*[@id="info"]//span[@class="pl" and contains(text(), "导演")]/following-sibling::span[@class="attrs"]/a[@rel="v:directedBy"]/text()')
-        writer = child_html.xpath('//*[@id="info"]//span[@class="pl" and contains(text(), "编剧")]/following-sibling::span[@class="attrs"]/a/text()')
+        director = child_html.xpath('//*[@id="info"]//span[@class="pl" and contains(text(), "导演")]'
+                                    '/following-sibling::span[@class="attrs"]/a[@rel="v:directedBy"]/text()')
+        writer = child_html.xpath('//*[@id="info"]//span[@class="pl" and contains(text(), "编剧")]'
+                                  '/following-sibling::span[@class="attrs"]/a/text()')
         actors = child_html.xpath('//*[@id="info"]//span/a[@rel="v:starring"]/text()')
         genre = child_html.xpath('//*[@id="info"]//span[@property="v:genre"]/text()')
-        country = child_html.xpath('//*[@id="info"]/span[@class="pl" and contains(text(), "制片国家/地区")]/following-sibling::text()[1]')
-        language = child_html.xpath('//*[@id="info"]/span[@class="pl" and contains(text(), "语言")]/following-sibling::text()[1]')
+        country = child_html.xpath('//*[@id="info"]/span[@class="pl" and contains(text(), "制片国家/地区")]'
+                                   '/following-sibling::text()[1]')
+        language = child_html.xpath('//*[@id="info"]/span[@class="pl" and contains(text(), "语言")]'
+                                    '/following-sibling::text()[1]')
         release_date = child_html.xpath('//*[@id="info"]//span[@property="v:initialReleaseDate"]/text()')
-        runtime = (child_html.xpath('//*[@id="info"]//span[@class="pl" and contains(text(), "片长")]/following-sibling::span[@property="v:runtime"]/text()')
-                   + child_html.xpath('//*[@id="info"]//span[@class="pl" and contains(text(), "片长")]/following-sibling::span[@property="v:runtime"]/following-sibling::text()[1]'))
+        runtime = (child_html.xpath('//*[@id="info"]//span[@class="pl" and contains(text(), "片长")]'
+                                    '/following-sibling::span[@property="v:runtime"]/text()')
+                   + child_html.xpath('//*[@id="info"]//span[@class="pl" and contains(text(), "片长")]'
+                                      '/following-sibling::span[@property="v:runtime"]/following-sibling::text()[1]'))
         aka = child_html.xpath('//*[@id="info"]/span[@class="pl" and contains(text(), "又名")]/following-sibling::text()[1]')
         rating = child_html.xpath('//*[@id="interest_sectl"]//strong[@class="ll rating_num" and @property="v:average"]/text()')
         rating_count = child_html.xpath('//*[@id="interest_sectl"]//a[@class="rating_people"]/span[@property="v:votes"]/text()')
-        star5 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]//div[@class="item"][span[contains(@class, "stars5")]]/span[@class="rating_per"]/text()')
-        star4 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]//div[@class="item"][span[contains(@class, "stars4")]]/span[@class="rating_per"]/text()')
-        star3 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]//div[@class="item"][span[contains(@class, "stars3")]]/span[@class="rating_per"]/text()')
-        star2 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]//div[@class="item"][span[contains(@class, "stars2")]]/span[@class="rating_per"]/text()')
-        star1 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]//div[@class="item"][span[contains(@class, "stars1")]]/span[@class="rating_per"]/text()')
+        star5 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]'
+                                 '//div[@class="item"][span[contains(@class, "stars5")]]/span[@class="rating_per"]/text()')
+        star4 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]'
+                                 '//div[@class="item"][span[contains(@class, "stars4")]]/span[@class="rating_per"]/text()')
+        star3 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]'
+                                 '//div[@class="item"][span[contains(@class, "stars3")]]/span[@class="rating_per"]/text()')
+        star2 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]'
+                                 '//div[@class="item"][span[contains(@class, "stars2")]]/span[@class="rating_per"]/text()')
+        star1 = child_html.xpath('//*[@id="interest_sectl"]//div[@class="ratings-on-weight"]'
+                                 '//div[@class="item"][span[contains(@class, "stars1")]]/span[@class="rating_per"]/text()')
         summary0 = child_html.xpath('//*[@id="link-report-intra"]//span[@property="v:summary"]//text()')
         summary = [l.replace('\n', '').replace('\u3000', '').strip() for l in summary0 if l.strip()]
         '''
@@ -70,10 +81,12 @@ def get_movie_info(child_urls,movie_info_list):
         info = page.select_one("div#info")
         #制片国家/地区
         pl = info.find("span", class_="pl", string=re.compile("制片国家/地区")) if info else None
-        country = [pl.next_sibling.strip()] if pl and isinstance(pl.next_sibling, str) and pl.next_sibling.strip() else ['无数据']
+        country = [pl.next_sibling.strip()] if pl and isinstance(pl.next_sibling, str) 
+        and pl.next_sibling.strip() else ['无数据']
         #语言
         pl = info.find("span", class_="pl", string=re.compile("语言")) if info else None
-        language = [pl.next_sibling.strip()] if pl and isinstance(pl.next_sibling, str) and pl.next_sibling.strip() else ['无数据']
+        language = [pl.next_sibling.strip()] if pl and isinstance(pl.next_sibling, str) 
+        and pl.next_sibling.strip() else ['无数据']
         #又名
         pl = info.find("span", class_="pl", string=re.compile("又名")) if info else None
         aka = [pl.next_sibling.strip()] if pl and isinstance(pl.next_sibling, str) and pl.next_sibling.strip() else ['无数据']
@@ -86,7 +99,8 @@ def get_movie_info(child_urls,movie_info_list):
         star5, star4, star3, star2, star1 = [stars[i:i+1] or ['无数据'] for i in range(5)]
         #剧情简介
         summary_tag = page.select_one("#link-report-intra span[property='v:summary']")
-        summary0 = [t.replace('\n', '').replace('　', '').strip() for t in summary_tag.find_all(string=True)] if summary_tag else []
+        summary0 = [t.replace('\n', '').replace('　', '').strip() for t in summary_tag.find_all(string=True)]
+         if summary_tag else []
         summary = [s for s in summary0 if s] or ['无数据']
 
 #正则提取
@@ -128,12 +142,14 @@ def get_movie_info(child_urls,movie_info_list):
         summary0 = re.split(r'<[^>]+>', summary1.group("summary")) if summary1 else []
         summary = [l.replace('\n', '').replace('\u3000', '').strip() for l in summary0 if l.strip()] or ['无数据']
 '''
-        movie_info_list.append([number,name,year,director,writer,actors,genre,country,language,release_date,runtime,aka,rating,rating_count,star5,star4,star3,star2,star1,summary])
+        movie_info_list.append([number,name,year,director,writer,actors,genre,country,language,
+                                release_date,runtime,aka,rating,rating_count,star5,star4,star3,star2,star1,summary])
         print("该页提取完毕")
     print("提取完毕")
 # 保存到CSV函数
 def sava_csv(movie_info_list, filename):
-    headers = ['排名','剧名','年份','导演','编剧','主演','类型','制片地区','语言','上映日期','片长','别名','评分','评价人数','五星','四星','三星','二星','一星','剧情']
+    headers = ['排名','剧名','年份','导演','编剧','主演','类型','制片地区','语言','上映日期','片长',
+               '别名','评分','评价人数','五星','四星','三星','二星','一星','剧情']
     with open(filename, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(headers)
@@ -176,11 +192,13 @@ def save_db(movie_info_list):
     cursor.execute(create_sql)
     # 批量插入sql
     insert_sql ='''
-    insert into movie_top250 (排名,剧名,年份,导演,编剧,主演,类型,制片地区,语言,上映日期,片长,别名,评分,评价人数,五星,四星,三星,二星,一星,剧情)
+    insert into movie_top250 (排名,剧名,年份,导演,编剧,主演,类型,制片地区,语言,上映日期,
+    片长,别名,评分,评价人数,五星,四星,三星,二星,一星,剧情)
     values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
 '''
     # 列表处理：空列表存入“无数据”，多值列表用“、”拼接成字符串
-    movie_info_list = [[('、'.join(v) if v else '无数据') if isinstance(v, list) else v for v in row] for row in movie_info_list]
+    movie_info_list = [[('、'.join(v) if v else '无数据') if isinstance(v, list)
+                        else v for v in row] for row in movie_info_list]
     # 批量写入
     cursor.executemany(insert_sql, movie_info_list)
     # 提交事务

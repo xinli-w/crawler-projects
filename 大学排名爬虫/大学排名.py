@@ -74,11 +74,9 @@ def sava_csv(ulist, filename):
 
 # 鼠标操作运行函数
 def action_run(web, info, by=By.ID,):
-    while 1:
-        next_page = web.find_element(by=by, value=info)
-        next_page.click()
-        break
-      
+    next_page = web.find_element(by=by, value=info)
+    next_page.click()
+
 # 主函数
 if __name__ == "__main__":
     url = "https://www.shanghairanking.cn/rankings/bcur/2024"
